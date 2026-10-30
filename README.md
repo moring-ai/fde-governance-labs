@@ -271,6 +271,7 @@ The LLM list is the 2026 edition (Excessive Agency moved from LLM06 to LLM03). T
 
 `deck/index.html` is the session's slide deck. Open it in a browser.
 Arrow keys or a click move through it, N shows the speaker notes and K copies the slide's current command.
+Each section ends with a technical learnings slide: four takeaways, each with the code to read next.
 
 ## Swapping in a real model
 

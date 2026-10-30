@@ -461,6 +461,16 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
 .roadmap.compact h3{font-size:31px}
 .roadmap.compact p{margin-top:6px;font-size:23px}
 
+/* technical learnings: four cards at the end of every section */
+.s-learn .h1{margin-top:28px;max-width:1560px;font-size:68px;line-height:1.06}
+.learn{margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.lcard{position:relative;background:var(--paper-2);border-radius:26px;padding:28px 34px 30px 92px;display:flex;flex-direction:column;gap:12px}
+.lcard .num{position:absolute;left:32px;top:31px;font-family:var(--mono);font-size:18px;letter-spacing:.14em;color:var(--coral-deep)}
+.lcard b{font-size:31px;line-height:1.16;letter-spacing:-.025em;font-weight:600}
+.lcard code{align-self:flex-start;max-width:100%;padding:7px 13px;border-radius:10px;background:#0A1F23;color:#FFD39E;font-family:var(--mono);font-size:16px;line-height:1.4;letter-spacing:.01em;overflow-wrap:anywhere}
+.lcard p{margin:0;font-size:23px;line-height:1.42;color:var(--ink-2)}
+.s-learn .note-s{margin-top:22px}
+
 /* session clock and the copy toast, outside the stage */
 .clock{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:calc(14px + env(safe-area-inset-left,0px));z-index:10;display:flex;align-items:center;gap:12px;
   padding:9px 15px;border-radius:999px;background:rgba(7,19,21,.74);color:#FFFFFF;font:500 13px/1 var(--mono);letter-spacing:.08em;font-variant-numeric:tabular-nums;
@@ -615,7 +625,7 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
 </section>
 
 <!-- 6 · who signs off -->
-<section class="slide light s-moments" aria-label="Who signs off" data-at="8">
+<section class="slide light s-moments" aria-label="Who signs off" data-at="7">
   <div class="pad">
     <div class="eyebrow rv">Who signs off</div>
     <h1 class="h1 rv">Four people have to say yes.</h1>
@@ -627,11 +637,27 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       <div class="mrow rv"><b>Business owner</b><span>“How fast can we stop it?”</span><span>A kill switch, and rollback in one command</span><em><i class="chip lab">Lab 4</i></em></div>
     </div>
   </div>
-  <aside class="notes">0:08. The FDE is usually the one person in the room who has to answer all four. The full question bank is in the kit: kit/signoff-questions.md. Ask who in the room has met each of these people on a real project.</aside>
+  <aside class="notes">0:07. The FDE is usually the one person in the room who has to answer all four. The full question bank is in the kit: kit/signoff-questions.md. Ask who in the room has met each of these people on a real project.</aside>
+</section>
+
+<!-- technical learnings: the agent -->
+<section class="slide light s-learn" aria-label="Technical learnings: the agent" data-at="8">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · the agent</div>
+    <h1 class="h1 rv">An agent is a loop that turns words into side effects.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>Each model turn is text or one tool call</b><code>ModelTurn(text=…) · ModelTurn(tool_call=…)</code><p>The loop runs the tool, hands the result back, and asks again until there's a reply.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Tools are where the risk lives</b><code>lookup_account · issue_refund · close_account</code><p>A wrong sentence is embarrassing. A wrong tool call moves money. Review the tools first.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Cap the loop</b><code>agent.py · MAX_STEPS = 5</code><p>Five model steps per customer message, then a colleague follows up. A runaway loop burns money.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Swap the model, keep the controls</b><code>Model.respond(system_prompt, tools, messages)</code><p>One method sits between the agent and any provider. The controls live outside it, so they work with every model.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> bankagent/agent.py · bankagent/model.py</p>
+  </div>
+  <aside class="notes">0:08. One minute, nothing new. These four are the mechanics under every lab: the loop, the tools, the cap, and the one method a real model plugs into. The code chips say where to look in the repo.</aside>
 </section>
 
 <!-- 7 · OWASP divider -->
-<section class="slide dark s-divider" aria-label="OWASP" data-at="10">
+<section class="slide dark s-divider" aria-label="OWASP" data-at="9">
   <canvas class="vortex" data-vortex='{"cx":1500,"cy":480,"rmin":14,"rmax":560,"rings":22,"spokes":42,"squash":0.36,"depth":70,"twist":1.35,"speed":0.045,"theme":"dark","alpha":0.95}'></canvas>
   <svg class="vmark" viewBox="0 0 268 254.46" style="left:1500px;top:410px" aria-hidden="true"><use href="#moring-mark"/></svg>
   <div class="pad">
@@ -647,11 +673,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       <li class="rv">MCP Top 10: its tools</li>
     </ul>
   </div>
-  <aside class="notes">0:10. Nobody needs to memorise 40 items. What matters is knowing which layer a question is about, and which control answers it. The security team will name these IDs; after today, so can you.</aside>
+  <aside class="notes">0:09. Nobody needs to memorise 40 items. What matters is knowing which layer a question is about, and which control answers it. The security team will name these IDs; after today, so can you.</aside>
 </section>
 
 <!-- 8 · where each list looks -->
-<section class="slide light s-flow" aria-label="Where each list looks" data-at="11">
+<section class="slide light s-flow" aria-label="Where each list looks" data-at="10">
   <div class="pad">
     <div class="eyebrow rv">Where each list looks</div>
     <h1 class="h1 rv">Follow one request through the agent.</h1>
@@ -665,11 +691,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       <li class="rv"><span class="dot" style="--d:5"></span><span class="n">06</span><b>The bank</b><span>Money moves, a record opens. Where the damage lands</span></li>
     </ol>
   </div>
-  <aside class="notes">0:11. Our demo agent has no separate skill or MCP server; its tools are plain Python. The same questions still apply wherever its tools run. In a real deployment, the model, the skills and the MCP servers are each something you pulled in from somewhere.</aside>
+  <aside class="notes">0:10. Our demo agent has no separate skill or MCP server; its tools are plain Python. The same questions still apply wherever its tools run. In a real deployment, the model, the skills and the MCP servers are each something you pulled in from somewhere.</aside>
 </section>
 
 <!-- 9 · LLM top 10 -->
-<section class="slide light s-habits owasp" aria-label="OWASP LLM Top 10" data-at="12">
+<section class="slide light s-habits owasp" aria-label="OWASP LLM Top 10" data-at="11">
   <div class="pad">
     <div class="eyebrow rv">OWASP · Top 10 for LLM Applications · 2026</div>
     <h1 class="h1 rv">The model: where it breaks.</h1>
@@ -688,11 +714,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
     <div class="detail rv"><code>Hover a card</code><span>The ringed ones break in today's labs. The rest go in your deployment pack.</span></div>
   </div>
-  <aside class="notes">0:12. Hover the ringed cards. Two changes from 2025 matter here: Excessive Agency climbed to LLM03, and System Prompt Leakage became LLM08 Hidden Context Exposure, which says to assume your prompt and tool schemas are readable. Keep it to a minute.</aside>
+  <aside class="notes">0:11. Hover the ringed cards. Two changes from 2025 matter here: Excessive Agency climbed to LLM03, and System Prompt Leakage became LLM08 Hidden Context Exposure, which says to assume your prompt and tool schemas are readable. Keep it to a minute.</aside>
 </section>
 
 <!-- 10 · agentic top 10 -->
-<section class="slide light s-habits owasp" aria-label="OWASP Agentic Top 10" data-at="14">
+<section class="slide light s-habits owasp" aria-label="OWASP Agentic Top 10" data-at="12">
   <div class="pad">
     <div class="eyebrow rv">OWASP · Top 10 for Agentic Applications · 2026</div>
     <h1 class="h1 rv">The agent: what changes when it can act.</h1>
@@ -711,11 +737,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
     <div class="detail rv"><code>Hover a card</code><span>This list is about what an agent does, not what a model says.</span></div>
   </div>
-  <aside class="notes">0:14. ASI09 is the sleeper: an approval step only works if the approver sees enough to say no. We come back to it in Lab 3 and Lab 5.</aside>
+  <aside class="notes">0:12. ASI09 is the sleeper: an approval step only works if the approver sees enough to say no. We come back to it in Lab 3 and Lab 5.</aside>
 </section>
 
 <!-- 11 · agentic skills top 10 -->
-<section class="slide light s-habits owasp" aria-label="OWASP Agentic Skills Top 10" data-at="15">
+<section class="slide light s-habits owasp" aria-label="OWASP Agentic Skills Top 10" data-at="13">
   <div class="pad">
     <div class="eyebrow rv">OWASP · Agentic Skills Top 10 · 2026, in development</div>
     <h1 class="h1 rv">Skills: what the agent installs.</h1>
@@ -734,11 +760,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
     <div class="detail rv"><code>Hover a card</code><span>Names may still change before this list ships. Check the source before you quote one.</span></div>
   </div>
-  <aside class="notes">0:15. Be honest that this list is still a draft. AST07 Update Drift is the one to remember: pin by hash, which is exactly what Lab 4's release history does.</aside>
+  <aside class="notes">0:13. Be honest that this list is still a draft. AST07 Update Drift is the one to remember: pin by hash, which is exactly what Lab 4's release history does.</aside>
 </section>
 
 <!-- 12 · MCP top 10 -->
-<section class="slide light s-habits owasp" aria-label="OWASP MCP Top 10" data-at="16">
+<section class="slide light s-habits owasp" aria-label="OWASP MCP Top 10" data-at="14">
   <div class="pad">
     <div class="eyebrow rv">OWASP · MCP Top 10 · 2025, beta</div>
     <h1 class="h1 rv">Tools: where the agent touches real systems.</h1>
@@ -757,11 +783,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
     <div class="detail rv"><code>Hover a card</code><span>Still in beta. MCP02, MCP07 and MCP08 are the ones reviewers ask about first.</span></div>
   </div>
-  <aside class="notes">0:16. Last list. Then we stop talking about lists and start breaking things.</aside>
+  <aside class="notes">0:14. Last list. Then we stop talking about lists and start breaking things.</aside>
 </section>
 
 <!-- 13 · the lab map -->
-<section class="slide light s-moments" aria-label="Today's labs" data-at="17">
+<section class="slide light s-moments" aria-label="Today's labs" data-at="15">
   <div class="pad">
     <div class="eyebrow rv">The next 35 minutes</div>
     <h1 class="h1 rv">Five ways to break it. Four controls to fix it.</h1>
@@ -774,11 +800,27 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       <div class="maprow rv"><b>5 · Injection</b><span>A nickname tells it to refund $95</span><code>LLM01 · LLM08 · ASI01 · MCP06</code><em><i class="chip ctl">Approvals</i></em></div>
     </div>
   </div>
-  <aside class="notes">0:17. This is the cheat sheet for the rest of the hour, and it's in the kit as owasp-cheatsheet.md. Lab 5 needs no new control; that's the point of it.</aside>
+  <aside class="notes">0:15. This is the cheat sheet for the rest of the hour, and it's in the kit as owasp-cheatsheet.md. Lab 5 needs no new control; that's the point of it.</aside>
+</section>
+
+<!-- technical learnings: owasp -->
+<section class="slide light s-learn" aria-label="Technical learnings: OWASP" data-at="16">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · OWASP</div>
+    <h1 class="h1 rv">Find the layer first. The list and the control follow.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>Four lists, four layers</b><code>LLM · ASI · AST · MCP</code><p>Model, agent, skills, tools. Work out which layer a question is about before you answer it.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Quote the edition with the ID</b><code>LLM06:2025 → LLM03:2026</code><p>Excessive Agency moved up three places in 2026. An ID without a year can point at the wrong risk.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Answer with a control and a test</b><code>LLM03 → approvals → test_lab1_approvals.py</code><p>Reviewers know the definitions. They want to see what stops it, and the proof that it does.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Every item gets a status</b><code>tested · not applicable · open</code><p>Draft and beta lists still work as checklists. Each item goes in the deployment pack with one of the three.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> kit/owasp-cheatsheet.md</p>
+  </div>
+  <aside class="notes">0:16. One minute. The habit to build: name the layer, quote the ID with its year, answer with a control and a test. Most items won't apply to a given agent; the pack says so, with a reason.</aside>
 </section>
 
 <!-- 14 · approvals divider -->
-<section class="slide dark s-divider" aria-label="Approvals" data-at="18">
+<section class="slide dark s-divider" aria-label="Approvals" data-at="17">
   <canvas class="vortex" data-vortex='{"cx":1500,"cy":480,"rmin":14,"rmax":560,"rings":22,"spokes":42,"squash":0.36,"depth":70,"twist":-1.35,"speed":-0.045,"theme":"dark","alpha":0.95}'></canvas>
   <svg class="vmark" viewBox="0 0 268 254.46" style="left:1500px;top:410px" aria-hidden="true"><use href="#moring-mark"/></svg>
   <div class="pad">
@@ -794,11 +836,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       <li class="rv">No means nothing changes</li>
     </ul>
   </div>
-  <aside class="notes">0:18. Lab 1. Excessive agency, and tool misuse: real actions with too little control.</aside>
+  <aside class="notes">0:17. Lab 1. Excessive agency, and tool misuse: real actions with too little control.</aside>
 </section>
 
 <!-- 15 · lab 1 failure, live -->
-<section class="slide light" aria-label="Lab 1: the failure" data-at="19">
+<section class="slide light" aria-label="Lab 1: the failure" data-at="18">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow live rv">Live · Lab 1 · the failure</div>
@@ -829,11 +871,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       </div>
     </div>
   </div>
-  <aside class="notes">0:19. K copies the command. Run it, come back, click. The second click shows the failing test's own message, word for word. Use C-1003 only for closing until Lab 5: asking Chen's balance triggers Lab 5 early.</aside>
+  <aside class="notes">0:18. K copies the command. Run it, come back, click. The second click shows the failing test's own message, word for word. Use C-1003 only for closing until Lab 5: asking Chen's balance triggers Lab 5 early.</aside>
 </section>
 
 <!-- 16 · vote, lab 1 -->
-<section class="slide light s-vote" aria-label="Your call: Lab 1" data-at="20">
+<section class="slide light s-vote" aria-label="Your call: Lab 1" data-at="19">
   <div class="pad">
     <div class="eyebrow rv">Your call · Lab 1</div>
     <h1 class="h1 rv">Would you ship this agent?</h1>
@@ -845,11 +887,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
     <div class="verdict b" data-step="1"><i class="chip lab">What we do</i><span><b>Ship it with a control.</b> Irreversible tools wait for a named person. Blocking is safe, and it's also how good projects die.</span></div>
   </div>
-  <aside class="notes">0:20. Count hands: press 1, 2 or 3 for each hand, or click the cards (shift-click takes one away, 0 clears). Then click the slide to reveal the answer. Most rooms split between block and control. Both are defensible; "ship it" isn't.</aside>
+  <aside class="notes">0:19. Count hands: press 1, 2 or 3 for each hand, or click the cards (shift-click takes one away, 0 clears). Then click the slide to reveal the answer. Most rooms split between block and control. Both are defensible; "ship it" isn't.</aside>
 </section>
 
 <!-- 17 · lab 1 fix, live -->
-<section class="slide light" aria-label="Lab 1: the fix" data-at="21">
+<section class="slide light" aria-label="Lab 1: the fix" data-at="20">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow live rv">Live · Lab 1 · the fix</div>
@@ -890,11 +932,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       </div>
     </div>
   </div>
-  <aside class="notes">0:21. Three trips to the terminal: K copies whichever command is lit. In the chat, answer n. Then show that lookups don't ask: only issue_refund and close_account are flagged irreversible, in tools.py. In production the approver is a queue or a chat message with two buttons; the contract is the same.</aside>
+  <aside class="notes">0:20. Three trips to the terminal: K copies whichever command is lit. In the chat, answer n. Then show that lookups don't ask: only issue_refund and close_account are flagged irreversible, in tools.py. In production the approver is a queue or a chat message with two buttons; the contract is the same.</aside>
 </section>
 
 <!-- 18 · where the check lives -->
-<section class="slide light" aria-label="Where the check lives" data-at="23">
+<section class="slide light" aria-label="Where the check lives" data-at="22">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow rv">Lab 1 · where the check lives</div>
@@ -935,11 +977,27 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       </div>
     </div>
   </div>
-  <aside class="notes">0:23. Four clicks, one per check. This is the only code we read today. OWASP's 2025 guidance said the system prompt isn't a security control, and this is what a control looks like instead. Lines are real; the bodies are abridged.</aside>
+  <aside class="notes">0:22. Four clicks, one per check. This is the only code we read today. OWASP's 2025 guidance said the system prompt isn't a security control, and this is what a control looks like instead. Lines are real; the bodies are abridged.</aside>
+</section>
+
+<!-- technical learnings: lab 1 -->
+<section class="slide light s-learn" aria-label="Technical learnings: Lab 1" data-at="23">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · Lab 1 · approvals</div>
+    <h1 class="h1 rv">Classify tools by consequence. Enforce in one place.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>Flag irreversible tools in code</b><code>tools.py · irreversible=True</code><p>The flag sits next to the tool, so neither a prompt edit nor a config release can flip it.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>One choke point for every call</b><code>agent.py · _guarded_call()</code><p>Kill switch, then scope, then approval, then the tool. Same order, on every call.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Approval is a contract</b><code>Approver.decide(request) → Decision</code><p>A request goes out and a yes or no comes back with a name. A terminal here; a queue or chat button in production.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Silence means no</b><code>answer in ("y", "yes")</code><p>Anything else is a refusal: an empty answer, a typo, a closed input. Default deny.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> bankagent/controls/approvals.py · tests/test_lab1_approvals.py</p>
+  </div>
+  <aside class="notes">0:23. One minute. If people keep one thing from Lab 1: the irreversible flag lives in code, and every call goes through one function. Default deny is the detail production systems miss; a timeout has to count as no.</aside>
 </section>
 
 <!-- 19 · scope divider -->
-<section class="slide dark s-divider" aria-label="Scope" data-at="25">
+<section class="slide dark s-divider" aria-label="Scope" data-at="24">
   <canvas class="vortex" data-vortex='{"cx":1500,"cy":480,"rmin":14,"rmax":560,"rings":22,"spokes":42,"squash":0.36,"depth":70,"twist":0.95,"speed":0.06,"theme":"dark","alpha":0.95}'></canvas>
   <svg class="vmark" viewBox="0 0 268 254.46" style="left:1500px;top:410px" aria-hidden="true"><use href="#moring-mark"/></svg>
   <div class="pad">
@@ -955,11 +1013,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       <li class="rv">The test checks what the database read</li>
     </ul>
   </div>
-  <aside class="notes">0:25. Lab 2: prompt injection that ends in a data leak.</aside>
+  <aside class="notes">0:24. Lab 2: prompt injection that ends in a data leak.</aside>
 </section>
 
 <!-- 20 · lab 2 failure, live -->
-<section class="slide light" aria-label="Lab 2: the failure" data-at="26">
+<section class="slide light" aria-label="Lab 2: the failure" data-at="25">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow live rv">Live · Lab 2 · the failure</div>
@@ -989,11 +1047,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       </div>
     </div>
   </div>
-  <aside class="notes">0:26. Two runs. Then invite the room to write their own attack on their laptops: anything with ignore, admin, auditor, fraud team or override gets past the stand-in model. A real model refuses more often, but not every time, and "most of the time" doesn't get signed off.</aside>
+  <aside class="notes">0:25. Two runs. Then invite the room to write their own attack on their laptops: anything with ignore, admin, auditor, fraud team or override gets past the stand-in model. A real model refuses more often, but not every time, and "most of the time" doesn't get signed off.</aside>
 </section>
 
 <!-- 21 · vote, lab 2 -->
-<section class="slide light s-vote" aria-label="Your call: Lab 2" data-at="28">
+<section class="slide light s-vote" aria-label="Your call: Lab 2" data-at="27">
   <div class="pad">
     <div class="eyebrow rv">Your call · Lab 2</div>
     <h1 class="h1 rv">Where should this check live?</h1>
@@ -1005,11 +1063,11 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
     <div class="verdict b" data-step="1"><i class="chip lab">What we do</i><span><b>Our code, on every call.</b> A prompt is a request. The provider's filter doesn't know who signed in. Only our code does.</span></div>
   </div>
-  <aside class="notes">0:28. Same voting keys as before. The provider's filter is a fine extra layer, but it can't know that this conversation belongs to Asha.</aside>
+  <aside class="notes">0:27. Same voting keys as before. The provider's filter is a fine extra layer, but it can't know that this conversation belongs to Asha.</aside>
 </section>
 
 <!-- 22 · lab 2 fix, live -->
-<section class="slide light" aria-label="Lab 2: the fix" data-at="29">
+<section class="slide light" aria-label="Lab 2: the fix" data-at="28">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow live rv">Live · Lab 2 · the fix</div>
@@ -1043,17 +1101,33 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
       </div>
     </div>
   </div>
-  <aside class="notes">0:29. The model still tried to look up C-1002, and the check refused it. That's the difference: we don't need the model to behave. The scope check runs before approval, so nobody is asked to approve a call that can never be allowed.</aside>
+  <aside class="notes">0:28. The model still tried to look up C-1002, and the check refused it. That's the difference: we don't need the model to behave. The scope check runs before approval, so nobody is asked to approve a call that can never be allowed.</aside>
 </section>
 
 <!-- 23 · thesis: prompt vs check -->
-<section class="slide dark s-thesis" aria-label="A prompt is a request" data-at="31">
+<section class="slide dark s-thesis" aria-label="A prompt is a request" data-at="30">
   <div class="pad">
     <div class="eyebrow rv">OWASP LLM08 · hidden context</div>
     <blockquote class="thesis rv">A prompt is a request. A check is a <em>control</em>.</blockquote>
     <p class="lead rv">OWASP's 2025 list said the system prompt “should not be considered a secret, nor should it be used as a security control.” The 2026 list folds that into LLM08.</p>
   </div>
-  <aside class="notes">0:31. The single line to remember from the first half. Keep prompts for tone and task. Put anything a reviewer would sign in code.</aside>
+  <aside class="notes">0:30. The single line to remember from the first half. Keep prompts for tone and task. Put anything a reviewer would sign in code.</aside>
+</section>
+
+<!-- technical learnings: lab 2 -->
+<section class="slide light s-learn" aria-label="Technical learnings: Lab 2" data-at="31">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · Lab 2 · scope</div>
+    <h1 class="h1 rv">Identity comes from the session, never from the chat.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>Bind the conversation when it starts</b><code>Conversation.customer_id</code><p>It's set from the sign-in. Nothing the customer types, and nothing the model decides, can change it.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Check the call's arguments</b><code>in_scope(call.args, convo.customer_id)</code><p>The tool call has to name the bound customer. A missing id counts as out of scope.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Refuse before anyone is asked</b><code>kill switch → scope → approval</code><p>An out-of-scope call never reaches an approver, so nobody approves a call that can never be allowed.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Test what the system did</b><code>"C-1002" not in lab.db.reads</code><p>A reply can hide a leak. The database's read log can't, so the test checks that.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> bankagent/controls/scope.py · tests/test_lab2_scoped_access.py</p>
+  </div>
+  <aside class="notes">0:31. One minute. Card 04 is the subtle one: the test asserts on the database's read log, not on the agent's reply. Ask the room how they would get the same evidence from a real database.</aside>
 </section>
 
 <!-- 24 · traces divider -->
@@ -1119,6 +1193,22 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
     </div>
   </div>
   <aside class="notes">0:33. Run it with --step and press Enter through the six steps while the room reads along. "Approved automatically" is a rubber stamp: ASI09, trusting the agent too much. Then run python lab.py on traces, chat once, and python replay.py to show your own run. Traces hold names, emails and balances, so who reads them is the data owner's call. The tool line is shortened on the slide.</aside>
+</section>
+
+<!-- technical learnings: lab 3 -->
+<section class="slide light s-learn" aria-label="Technical learnings: Lab 3" data-at="35">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · Lab 3 · traces</div>
+    <h1 class="h1 rv">Write it down whatever happens, and pin it to what ran.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>One JSON line per step</b><code>traces/&lt;run&gt;.jsonl</code><p>The customer's message, each tool call and the reply. Any log system can read it.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Record the decision with the action</b><code>"approval": {approver, approved, note}</code><p>Who said yes or no, and why. A null on an irreversible call that ran is the hole Lab 1 closes.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Pin each line to the release</b><code>release · release_hash</code><p>The version, plus a hash of the prompt and tool config. That's how you show which release moved the money.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Traces are personal data</b><code>name · email · balance</code><p>Who reads them, and for how long, is the data owner's call. Redaction is this lab's homework.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> bankagent/controls/traces.py · replay.py</p>
+  </div>
+  <aside class="notes">0:35. One minute. A trace only helps in a review if it names the approver and the release. It also holds personal data, so retention is the data owner's decision, not ours.</aside>
 </section>
 
 <!-- 26 · rollback divider -->
@@ -1295,8 +1385,24 @@ First release.</p>
   <aside class="notes">0:41. Five trips; K copies whichever command is lit. The kill switch is checked before scope and approval, so nobody gets asked to approve a refund that's switched off. Finish with python release.py status to show the log: deploy, disable, rollback, enable, each with who and when. release.py works while chat.py runs in another terminal.</aside>
 </section>
 
+<!-- technical learnings: lab 4 -->
+<section class="slide light s-learn" aria-label="Technical learnings: Lab 4" data-at="44">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · Lab 4 · rollback</div>
+    <h1 class="h1 rv">Keep every release. Stop one tool without a deploy.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>Prompt and tool config ship together</b><code>releases/v1/prompt.txt · tools.json</code><p>Limits live in versioned config, so changing a limit is a release, with a diff someone can read.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Fingerprint what ran</b><code>Release.hash · sha256, first 12 hex</code><p>Change one character of the prompt or config and the hash changes. Pin by hash, not by name (AST07).</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Roll back to a snapshot</b><code>.state/release_history.json</code><p>Each release's full prompt and config is kept, so rollback works even if someone has edited the files since.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Read the switch on every call</b><code>releases.live() · disabled_tools()</code><p>The agent rereads the release every turn and the kill switch on every tool call. No restart needed.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> bankagent/controls/rollback.py · release.py</p>
+  </div>
+  <aside class="notes">0:44. One minute. The hash is what makes rollback trustworthy: you can prove what ran even if someone edited the files. Kill switch first, rollback second, as the room voted.</aside>
+</section>
+
 <!-- 31 · injection divider -->
-<section class="slide dark s-divider" aria-label="Injection" data-at="44">
+<section class="slide dark s-divider" aria-label="Injection" data-at="45">
   <canvas class="vortex" data-vortex='{"cx":1500,"cy":480,"rmin":14,"rmax":560,"rings":22,"spokes":42,"squash":0.36,"depth":70,"twist":-0.95,"speed":-0.06,"theme":"dark","alpha":0.95}'></canvas>
   <svg class="vmark" viewBox="0 0 268 254.46" style="left:1500px;top:410px" aria-hidden="true"><use href="#moring-mark"/></svg>
   <div class="pad">
@@ -1312,11 +1418,11 @@ First release.</p>
       <li class="rv">Neither scope nor the $100 limit catches it</li>
     </ul>
   </div>
-  <aside class="notes">0:44. Prompt injection is LLM01 and goal hijack is ASI01: the top of both lists. This is the indirect kind, the one agents make worse.</aside>
+  <aside class="notes">0:45. Prompt injection is LLM01 and goal hijack is ASI01: the top of both lists. This is the indirect kind, the one agents make worse.</aside>
 </section>
 
 <!-- 32 · lab 5 failure, live -->
-<section class="slide light" aria-label="Lab 5: the failure" data-at="45">
+<section class="slide light" aria-label="Lab 5: the failure" data-at="46">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow live rv">Live · Lab 5 · the failure</div>
@@ -1352,11 +1458,11 @@ First release.</p>
       </div>
     </div>
   </div>
-  <aside class="notes">0:45. --controls off shows the starter without touching controls.toml, which is all on by now. Ask the room where else instruction-shaped text hides in a real system: support tickets, emails, PDFs, web pages, product reviews. The record is in bankagent/db.py.</aside>
+  <aside class="notes">0:46. --controls off shows the starter without touching controls.toml, which is all on by now. Ask the room where else instruction-shaped text hides in a real system: support tickets, emails, PDFs, web pages, product reviews. The record is in bankagent/db.py.</aside>
 </section>
 
 <!-- 33 · lab 5 fix, live -->
-<section class="slide light" aria-label="Lab 5: the fix" data-at="47">
+<section class="slide light" aria-label="Lab 5: the fix" data-at="48">
   <div class="pad s-proof s-live">
     <div class="proof-copy">
       <div class="eyebrow live rv">Live · Lab 5 · the fix</div>
@@ -1397,11 +1503,27 @@ First release.</p>
       </div>
     </div>
   </div>
-  <aside class="notes">0:47. Answer n. Then replay the recorded run (python replay.py with no argument replays your own). Make the ASI09 point clearly: the request carries the customer's words because an approver who sees only the action will approve it. Homework for this lab: flag irreversible calls the customer never asked for. The output lines are shortened on the slide.</aside>
+  <aside class="notes">0:48. Answer n. Then replay the recorded run (python replay.py with no argument replays your own). Make the ASI09 point clearly: the request carries the customer's words because an approver who sees only the action will approve it. Homework for this lab: flag irreversible calls the customer never asked for. The output lines are shortened on the slide.</aside>
+</section>
+
+<!-- technical learnings: lab 5 -->
+<section class="slide light s-learn" aria-label="Technical learnings: Lab 5" data-at="50">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · Lab 5 · injection</div>
+    <h1 class="h1 rv">Everything the model reads is untrusted input.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>Tool output goes back into the prompt</b><code>lookup_account → nickname → model</code><p>Any field a customer can edit is text an attacker can write, and the model reads it as context.</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Put controls on actions, not on text</b><code>_guarded_call()</code><p>A filter on words misses the next phrasing. A check on the tool call holds, whatever the source.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Show the approver the context</b><code>ApprovalRequest.customer_said</code><p>The action, next to what the customer actually asked. Without it, approvers say yes (ASI09).</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>Assume limits are visible</b><code>"maximum": 100 in the tool schema</code><p>The model reads the limit, so an attacker can learn it too (LLM08). Limits catch mistakes, not attackers.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> bankagent/model.py · tests/test_lab5_injection.py</p>
+  </div>
+  <aside class="notes">0:50. One minute. The big idea for agents: everything the model reads is input, your own data included. Controls on actions hold where filters on text don't. And assume hidden context, limits included, is readable.</aside>
 </section>
 
 <!-- 34 · where controls live -->
-<section class="slide light s-shift s-where" aria-label="Where controls live" data-at="50">
+<section class="slide light s-shift s-where" aria-label="Where controls live" data-at="51">
   <div class="pad">
     <div class="eyebrow rv">Where controls live</div>
     <h1 class="h1 rv">Every control has a part in your code and a part in theirs.</h1>
@@ -1436,21 +1558,37 @@ First release.</p>
     </div>
     <p class="note-s rv">OWASP's Agent Control Standard (v0.1, September 2026) names this pattern: policy enforcement points at runtime. _guarded_call is one.</p>
   </div>
-  <aside class="notes">0:50. The middle column is the one FDEs forget. kit/controls-map.md has every control across all three columns.</aside>
+  <aside class="notes">0:51. The middle column is the one FDEs forget. kit/controls-map.md has every control across all three columns.</aside>
 </section>
 
 <!-- 35 · thesis: whose account -->
-<section class="slide dark s-thesis" aria-label="Whose account" data-at="52">
+<section class="slide dark s-thesis" aria-label="Whose account" data-at="53">
   <div class="pad">
     <div class="eyebrow rv">Why not your own AWS account</div>
     <blockquote class="thesis rv">Run it where the customer can <em>see it, audit it and switch it off</em>.</blockquote>
     <p class="lead rv">In your account, their security team can't watch the logs, can't audit a change and can't stop it without calling you. And their data leaves their boundary.</p>
   </div>
-  <aside class="notes">0:52. This is the answer to "why can't I just deploy from my own AWS account?" It's fine for a demo. It fails review for reasons that have nothing to do with your code. Build the first demo the way production will look.</aside>
+  <aside class="notes">0:53. This is the answer to "why can't I just deploy from my own AWS account?" It's fine for a demo. It fails review for reasons that have nothing to do with your code. Build the first demo the way production will look.</aside>
+</section>
+
+<!-- technical learnings: where it runs -->
+<section class="slide light s-learn" aria-label="Technical learnings: where it runs" data-at="54">
+  <div class="pad">
+    <div class="eyebrow rv">Technical learnings · where it runs</div>
+    <h1 class="h1 rv">Build the first demo the way production will run.</h1>
+    <div class="learn">
+      <div class="lcard rv"><span class="num">01</span><b>The agent gets its own identity</b><code>workload identity · short-lived</code><p>Not a developer's keys, not a shared secret. Scoped to what its tools need (MCP01, MCP07).</p></div>
+      <div class="lcard rv"><span class="num">02</span><b>Traces go to their log system</b><code>traces/*.jsonl → their SIEM</code><p>Their retention, their access rules, their audit trail, from day one.</p></div>
+      <div class="lcard rv"><span class="num">03</span><b>Approvals arrive in their tools</b><code>ConsoleApprover → their queue</code><p>Write one class with decide(). The terminal and a ticket queue share the same contract.</p></div>
+      <div class="lcard rv"><span class="num">04</span><b>The kill switch has a named owner</b><code>python release.py disable issue_refund</code><p>Their on-call holds it, and it works without calling you.</p></div>
+    </div>
+    <p class="note-s rv"><b>Read next:</b> kit/controls-map.md · kit/rollback-runbook.md</p>
+  </div>
+  <aside class="notes">0:54. One minute. This is the bridge to the customer's environment: their identity, their logs, their approvers, their on-call. kit/controls-map.md has every control in all three places.</aside>
 </section>
 
 <!-- 36 · the kit -->
-<section class="slide light s-habits" aria-label="Take-home kit" data-at="54">
+<section class="slide light s-habits" aria-label="Take-home kit" data-at="55">
   <div class="pad">
     <div class="eyebrow rv">Take-home kit · in the repo</div>
     <h1 class="h1 rv">Everything from today, for your next deployment.</h1>
@@ -1466,7 +1604,7 @@ First release.</p>
       <div class="habit rv"><code>reading-list.md</code><span>The primary sources: OWASP, ATLAS, NIST, ISO</span></div>
     </div>
   </div>
-  <aside class="notes">0:54. Point at the example deployment pack: it's the whole session written up as the document a reviewer signs. Their homework pack looks like that, for their own cohort project.</aside>
+  <aside class="notes">0:55. Point at the example deployment pack: it's the whole session written up as the document a reviewer signs. Their homework pack looks like that, for their own cohort project.</aside>
 </section>
 
 <!-- 37 · homework -->
@@ -1487,7 +1625,7 @@ First release.</p>
 </section>
 
 <!-- 38 · close -->
-<section class="slide light s-close" aria-label="Show it working" data-at="58">
+<section class="slide light s-close" aria-label="Show it working" data-at="57">
   <canvas class="vortex" data-vortex='{"cx":1540,"cy":600,"rmin":14,"rmax":520,"rings":20,"spokes":40,"squash":0.34,"depth":64,"twist":1.2,"speed":0.04,"theme":"light","alpha":0.75}'></canvas>
   <svg class="vmark" viewBox="0 0 268 254.46" style="left:1540px;top:536px" aria-hidden="true"><use href="#moring-mark"/></svg>
   <div class="pad">
@@ -1501,12 +1639,12 @@ First release.</p>
       <li class="rv"><span class="n">04</span><b>Defend it</b><span class="sd">Write the pack for your own project.</span></li>
     </ol>
   </div>
-  <aside class="notes">0:58. Questions. Before people leave, ask them to run pytest --controls=on and see 20 passed. Reset for the next session with python lab.py reset.</aside>
+  <aside class="notes">0:57. Questions. Before people leave, ask them to run pytest --controls=on and see 20 passed. Reset for the next session with python lab.py reset.</aside>
 </section>
 
 <div class="chrome" aria-hidden="true">
   <svg class="logo" viewBox="0 0 1067.95 254.46"><use href="#moring-logo"/></svg>
-  <div class="pageno" id="pageno">01 / 38</div>
+  <div class="pageno" id="pageno">01 / 46</div>
   <div class="progress"><i></i></div>
 </div>
 </div>
@@ -1517,7 +1655,7 @@ First release.</p>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="hud" id="hud" role="toolbar" aria-label="Deck controls">
   <button type="button" id="hud-prev" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-  <span class="hud-count" id="hud-count" aria-live="polite">1 / 38</span>
+  <span class="hud-count" id="hud-count" aria-live="polite">1 / 46</span>
   <button type="button" id="hud-next" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   <span class="hud-sep" aria-hidden="true"></span>
   <button type="button" id="hud-copy"><span class="lbl">Copy command</span><kbd>K</kbd></button>
