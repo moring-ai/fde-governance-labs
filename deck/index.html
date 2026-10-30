@@ -471,6 +471,22 @@ html.view-client [data-view="partner"],html:not(.view-client) [data-view="client
 .lcard p{margin:0;font-size:23px;line-height:1.42;color:var(--ink-2)}
 .s-learn .note-s{margin-top:22px}
 
+/* print view (?print): every slide fully built, one per page, for Save as PDF */
+@page{size:1920px 1080px;margin:0}
+html.print-mode,html.print-mode body{height:auto;overflow:visible;background:#FFFFFF}
+html.print-mode *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html.print-mode *,html.print-mode *::before,html.print-mode *::after{animation:none!important;transition:none!important}
+html.print-mode .viewport{position:static;padding:0;overflow:visible}
+html.print-mode .stage{position:static;margin:0;width:1920px;height:auto;transform:none;overflow:visible;box-shadow:none;background:none}
+html.print-mode .slide{position:relative;inset:auto;width:1920px;height:1080px;visibility:visible;opacity:1;break-after:page;page-break-after:always}
+html.print-mode .slide:last-of-type{break-after:auto;page-break-after:auto}
+html.print-mode .stage > .chrome,html.print-mode .hud,html.print-mode .clock,html.print-mode .toast,html.print-mode .notes-panel,html.print-mode .rotate-hint{display:none!important}
+html.print-mode .slide.dark .chrome{color:#FFFFFF}
+html.print-mode .cap{opacity:1!important}
+html.print-mode .cmd.is-current{background:none}
+html.print-mode .copy,html.print-mode .live-tag,html.print-mode .detail code,html.print-mode .opt .k,html.print-mode .opt .n,html.print-mode .opt .bar{display:none}
+html.print-mode .opt b{min-height:0}
+
 /* session clock and the copy toast, outside the stage */
 .clock{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:calc(14px + env(safe-area-inset-left,0px));z-index:10;display:flex;align-items:center;gap:12px;
   padding:9px 15px;border-radius:999px;background:rgba(7,19,21,.74);color:#FFFFFF;font:500 13px/1 var(--mono);letter-spacing:.08em;font-variant-numeric:tabular-nums;
@@ -1813,6 +1829,26 @@ First release.</p>
       k = Math.max(0.05, Math.min((viewport.clientWidth - 2 * g) / W, (viewport.clientHeight - 2 * g) / H));
       stage.style.setProperty('--k', k.toFixed(5));
       sizeVortex();
+    }
+
+    /* print view: ?print lays out every slide fully built, one per page, each with its own logo and page number */
+    if (/(?:^|[?&])print(?:[=&]|$)/.test(location.search.slice(1))) {
+      root.classList.add('print-mode');
+      root.classList.remove('is-booting');
+      var tpl = stage.querySelector('.chrome');
+      slides.forEach(function (s, i) {
+        applySteps(s, +s.dataset.steps);
+        s.classList.add('is-active');
+        var c = tpl.cloneNode(true);
+        var pn = c.querySelector('.pageno');
+        pn.removeAttribute('id');
+        pn.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(N).padStart(2, '0');
+        c.style.setProperty('--p', ((i + 1) / N).toFixed(4));
+        s.appendChild(c);
+      });
+      k = 1;
+      sizeVortex();
+      return;
     }
 
     /* session clock: starts on the first click, compares against each slide's data-at minute */
