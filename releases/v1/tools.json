@@ -1,0 +1,12 @@
+{
+  "lookup_account": {
+    "description": "Look up the customer's account: name, email, balance and status."
+  },
+  "issue_refund": {
+    "description": "Refund money to the customer's account. A refund cannot be taken back.",
+    "max_amount": 100
+  },
+  "close_account": {
+    "description": "Close the customer's account. This cannot be undone."
+  }
+}

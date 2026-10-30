@@ -1,0 +1,11 @@
+# Which governance controls are switched on.
+# Everything starts off. Each lab turns one on.
+#
+# To ignore this file for one test run:
+#   pytest --controls=off    everything off (the starter agent)
+#   pytest --controls=on     everything on
+
+approvals = false      # Lab 1: irreversible tools wait for a human yes/no
+scoped_access = false  # Lab 2: the agent can only touch the signed-in customer's record
+traces = false         # Lab 3: every step is written to traces/<run>.jsonl
+rollback = false       # Lab 4: release history, one-command rollback, kill switch

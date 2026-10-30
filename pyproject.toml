@@ -1,0 +1,14 @@
+[project]
+name = "fde-governance-labs"
+version = "0.1.0"
+description = "Take-home labs: approvals, scoped access, traces and rollback for a small support agent."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = ["control(*names): runs only when these controls are switched on; skipped otherwise"]
